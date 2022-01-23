@@ -98,8 +98,8 @@ CREATE TABLE people (
 
   CREATE TABLE castings (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  actor_person_id INTEGER,
   movie_id INTEGER,
+  actor_person_id INTEGER,
   role TEXT
   );
 
@@ -134,9 +134,9 @@ INSERT INTO movies (title, release_year, mpaa_rating_id, director_person_id)
 VALUES
     ("Batman Begins", "2005", 3, 1),
     ("The Dark Knight", "2008", 3, 1),
-    ("The Dark Knight Risess", "2012", 3, 1);
+    ("The Dark Knight Rises", "2012", 3, 1);
 
-INSERT INTO castings (actor_person_id, movie_id, role)
+INSERT INTO castings (movie_id, actor_person_id, role)
 VALUES
     (1, 2, "Bruce Wayne"),
     (1, 3, "Alfred"),
@@ -162,6 +162,8 @@ VALUES
 
 -- The SQL statement for the movies output
 -- TODO!
+
+.width 25 10 10 25
 SELECT movies.title, movies.release_year, mpaa_ratings.rating, people.name
 FROM movies
     INNER JOIN mpaa_ratings ON movies.mpaa_rating_id = mpaa_ratings.id
@@ -176,7 +178,7 @@ ORDER BY movies.release_year;
 
 -- The SQL statement for the cast output
 -- TODO!
-
+.width 25 25 25
 SELECT movies.title, people.name, castings.role
 FROM castings
     INNER JOIN movies ON castings.movie_id = movies.id
