@@ -88,7 +88,7 @@ CREATE TABLE movies (
 CREATE TABLE mpaa_ratings (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   rating TEXT,
-  description TEXT,
+  description TEXT
   );
 
 CREATE TABLE people (
@@ -107,48 +107,52 @@ CREATE TABLE people (
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
-INSERT INTO mpaa_ratings
-VALUES ("G", "General Audiences");
-VALUES ("PG", "Parental Guidance Suggested");
-VALUES ("PG-13", "Parents Strongly Cautioned");
-VALUES ("R", "Restricted");
-VALUES ("NC-17", "Adults Only");
+INSERT INTO mpaa_ratings (rating, description)
+VALUES
+    ("G", "General Audiences"),
+    ("PG", "Parental Guidance Suggested"),
+    ("PG-13", "Parents Strongly Cautioned"),
+    ("R", "Restricted"),
+    ("NC-17", "Adults Only");
 
-INSERT INTO people
-VALUES ("Christopher Nolan"); -- 1
-VALUES ("Christian Bale"); -- 2
-VALUES ("Michael Caine"); -- 3
-VALUES ("Liam Neeson"); -- 4
-VALUES ("Katie Holmes"); -- 5
-VALUES ("Gary Oldman"); -- 6
-VALUES ("Heath Ledger"); -- 7
-VALUES ("Aaron Eckhart"); -- 8
-VALUES ("Maggie Gyllenhaal"); -- 9
-VALUES ("Tom Hardy"); -- 10
-VALUES ("Joseph Gordon-Levitt"); -- 11
-VALUES ("Anne Hathaway"); -- 12
+INSERT INTO people (name)
+VALUES
+    ("Christopher Nolan"), -- 1
+    ("Christian Bale"), -- 2
+    ("Michael Caine"), -- 3
+    ("Liam Neeson"), -- 4
+    ("Katie Holmes"), -- 5
+    ("Gary Oldman"), -- 6
+    ("Heath Ledger"), -- 7
+    ("Aaron Eckhart"), -- 8
+    ("Maggie Gyllenhaal"), -- 9
+    ("Tom Hardy"), -- 10
+    ("Joseph Gordon-Levitt"), -- 11
+    ("Anne Hathaway"); -- 12
 
-INSERT INTO movies
-VALUES ("Batman Begins", "2005", 3, 1);
-VALUES ("The Dark Knight", "2008", 3, 1);
-VALUES ("The Dark Knight Risess", "2012", 3, 1);
+INSERT INTO movies (title, release_year, mpaa_rating_id, director_person_id)
+VALUES
+    ("Batman Begins", "2005", 3, 1),
+    ("The Dark Knight", "2008", 3, 1),
+    ("The Dark Knight Risess", "2012", 3, 1);
 
-INSERT INTO castings
-VALUES (1, 2, "Bruce Wayne");
-VALUES (1, 3, "Alfred");
-VALUES (1, 4, "Ra's Al Ghul");
-VALUES (1, 5, "Rachel Dawes");
-VALUES (1, 6, "Commissioner Gordon");
-VALUES (2, 2, "Bruce Wayne");
-VALUES (2, 7, "Joker");
-VALUES (2, 8, "Harvey Dent");
-VALUES (2, 3, "Alfred");
-VALUES (2, 9, "Rachel Dawes");
-VALUES (3, 2, "Bruce Wayne");
-VALUES (3, 6, "Commissioner Gordon");
-VALUES (3, 10, "Bane");
-VALUES (3, 11, "John Blake");
-VALUES (3, 12, "Selina Kyle");
+INSERT INTO castings (actor_person_id, movie_id, role)
+VALUES
+    (1, 2, "Bruce Wayne"),
+    (1, 3, "Alfred"),
+    (1, 4, "Ra's Al Ghul"),
+    (1, 5, "Rachel Dawes"),
+    (1, 6, "Commissioner Gordon"),
+    (2, 2, "Bruce Wayne"),
+    (2, 7, "Joker"),
+    (2, 8, "Harvey Dent"),
+    (2, 3, "Alfred"),
+    (2, 9, "Rachel Dawes"),
+    (3, 2, "Bruce Wayne"),
+    (3, 6, "Commissioner Gordon"),
+    (3, 10, "Bane"),
+    (3, 11, "John Blake"),
+    (3, 12, "Selina Kyle");
 
 
 -- Prints a header for the movies output
@@ -158,6 +162,11 @@ VALUES (3, 12, "Selina Kyle");
 
 -- The SQL statement for the movies output
 -- TODO!
+SELECT movies.title, movies.release_year, mpaa_ratings.rating, people.name
+FROM movies
+    INNER JOIN mpaa_ratings ON movies.mpaa_rating_id = mpaa_ratings.id
+    INNER JOIN people ON movies.director_person_id = people.id
+ORDER BY movies.release_year;
 
 -- Prints a header for the cast output
 .print ""
@@ -165,6 +174,10 @@ VALUES (3, 12, "Selina Kyle");
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
 -- TODO!
+
+SELECT movies.title, people.name, castings.role
+FROM castings
+    INNER JOIN movies ON castings.movie_id = movies.id
+    INNER JOIN people ON castings.actor_person_id = people.id;
